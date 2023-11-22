@@ -1,4 +1,4 @@
-name: Linting
+name: linter-check
 on: [push]
 jobs:
   build:
@@ -10,7 +10,7 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
-      - name: Install linter
+      - name: Install flake8
         run: python -m pip install flake8
       - name: Linting
         run: flake8 --ignore=F401 page_analyzer/app.py
