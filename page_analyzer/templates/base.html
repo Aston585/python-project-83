@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+	<title>Анализатор страниц</title>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"/>
+</head>
+
+<body class="min-vh-100 d-flex flex-column">
+  <header class="flex-shrink-0">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark px-3">
+			<a class="navbar-brand" href="{{ url_for('index') }}">Анализатор страниц</a>
+				<ul class="navbar-nav">
+					<li class="nav-item"><a class="nav-link " href="{{ url_for('get_sites') }}">Сайты</a></li>
+				</ul>
+		</nav>
+		</header>
+
+	{% if messages %}
+		{% for category, message in messages %}
+		
+			{% if category == 'success' %}
+				<div class="alert alert-success" role="alert">{{ message }}</div>
+			{% endif %}
+			
+			{% if category == 'warning' %}
+				<div class="alert alert-info" role="alert">{{ message }}</div>
+			{% endif %}
+			
+			{% if category == 'error' %}
+			<div class="alert alert-danger" role="alert">{{ message }}</div>
+			{% endif %}
+			
+		{% endfor %}
+	{% endif %}
+
+	
+	{% block index %}
+	{% endblock %}
+
+	{% block list_sites %}
+	{% endblock %}
+
+	{% block show_site %}
+	{% endblock %}
+	
+	{% block error404 %}
+	{% endblock %}
+
+	
+	<footer class="border-top py-3 mt-5 flex-shrink-0">
+		<div class="container-lg">
+			<div class="text-center">
+				<a href="https://ru.hexlet.io/" target="_blank">Hexlet</a>
+			</div>
+		</div>
+	</footer>
+</body>
+</html>

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block list_sites %}
+<main class="flex-grow-1">
+	<div class="container-lg mt-3">
+		<h1>Сайты</h1>
+		
+		<div class="table-responsive">
+			<table class="table table-bordered table-hover text-nowrap" data-test="urls">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Имя</th>
+						<th>Последняя проверка</th>
+						<th>Код ответа</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% if responsive %}
+						{% for result in responsive %}
+							<tr>
+								<td>{{ result.id }}</td>
+								<td><a href="url_for('analize_site', id=result.id)">{{ result.name }}</a></td>
+								<td>{{ result.last_check }}</td>
+								<td>{{ result.code_responce }}</td>
+							</tr>
+						{% endfor %}
+					{% endif %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</main>
+{% endblock %}

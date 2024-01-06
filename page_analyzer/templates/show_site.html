@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block show_site %}
+<main class="flex-grow-1">
+	<div class="container-lg mt-3">
+		<h1>Сайт:{{ site_info[1] }}</h1>
+
+	<div class="table-responsive">
+		<table class="table table-bordered table-hover text-nowrap" result-test="url">
+			<tbody>
+				<tr>
+					<td>ID</td>
+					<td>{{ site_info.id }}</td>
+				</tr>
+				<tr>
+					<td>Имя</td>
+					<td>{{ site_info.name }}</td>
+				</tr>
+				<tr>
+					<td>Дата создания</td>
+					<td>{{ site_info.created_at }}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<h2 class="mt-5 mb-3">Проверки</h2>
+	<form method="post" action="{{ url_for('checks', id=site_info.id) }}">
+		<input type="submit" class="btn btn-primary" value="Запустить проверку">
+	</form>
+	
+	<div>
+		<table class="table table-bordered table-hover mt-2" result-test="checks">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Код ответа</th>
+					<th>h1</th>
+					<th>title</th>
+					<th>description</th>
+					<th>Дата создания</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% if site_checks %}
+					{% for check in site_checks %}
+						<tr>
+							<td>{{ check.id }}</td>
+							<td>{{ check.code_responce }}</td>
+							<td>{{ check.h1 }}</td>
+							<td>{{ check.title }}</td>
+							<td>{{ check.descripshion }}</td>
+							<td>{{ check.creation_date }}</td>
+						</tr>
+					{% endfor %}
+				{% endif %}
+			</tbody>
+		</table>
+	</div>
+
+	</div>
+</main>
+{% endblock %}
+
