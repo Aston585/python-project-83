@@ -7,8 +7,6 @@ from psycopg2.extras import NamedTupleCursor
 load_dotenv()
 DATABASE_URL = os.getenv('DATABASE_URL')
 
-# URLS = [f"https://ru.hexlet{i}.io" for i in range(1000)]
-
 
 class OperatorDB:
     def deco_manage_connection(method):
@@ -32,23 +30,20 @@ class OperatorDB:
     def add_site(self, url):
         self.cursor.execute("""
             INSERT INTO urls (name)
-            VALUES (%s);""",
-            (url,))
+            VALUES (%s);""", (url,))
 
     @deco_manage_connection
     def check_availability(self, url):
         self.cursor.execute("""
             SELECT urls.name FROM urls
-            WHERE name = %s""",
-            (url,))
+            WHERE name = %s""", (url,))
         return True if self.cursor.fetchone() else False
 
     @deco_manage_connection
     def get_site_info(self, url):
         self.cursor.execute("""
             SELECT * FROM urls
-            WHERE name = %s""",
-            (url,))
+            WHERE name = %s""", (url,))
         return self.cursor.fetchone()
 
     def _check_conn_db(self):
@@ -56,7 +51,6 @@ class OperatorDB:
             print("Соединение с базой данных установлено")
         else:
             print("Соединение с базой данных разорвано")
-
 
 
 # db_oper.add_sites(URLS, date.today())
