@@ -1,9 +1,8 @@
-from .db_operations import db_operator
+from .db_operations import OperatorDB
 from .url_processing import normalyze_url, validate_url
 from flask import (Flask,
                    render_template,
                    request,
-                   make_response,
                    redirect,
                    url_for,
                    flash,
@@ -12,17 +11,12 @@ from flask import (Flask,
                    )
 import os
 from dotenv import load_dotenv
-from datetime import datetime
 
 
 load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY')
-
-
-# session = {
-#     url: (site_info),
-# }
+db_operator = OperatorDB()
 
 
 @app.route("/", methods=['GET', 'POST'])
