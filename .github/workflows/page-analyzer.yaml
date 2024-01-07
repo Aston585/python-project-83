@@ -15,5 +15,5 @@ jobs:
       - name: Linting
         run: flake8 --ignore=F401 page_analyzer/app.py
       - name: Deploy on the Render
-        run: curl ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: curl "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
 
