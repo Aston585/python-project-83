@@ -46,15 +46,3 @@ class OperatorDB:
             WHERE name = %s""", (url,))
         return self.cursor.fetchone()
 
-    def _check_conn_db(self):
-        if self.connection.closed == 0:
-            print("Соединение с базой данных установлено")
-        else:
-            print("Соединение с базой данных разорвано")
-
-
-# db_oper.add_sites(URLS, date.today())
-# print(db_oper.get_list_sites())
-# print(db_oper.check_availability('https://www.psycopg.org'))
-# print(db_oper.check_availability('https://ru.hexlet0.io'))
-# print(db_oper.get_site('https://ru.hexlet1.io'))
