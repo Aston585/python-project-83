@@ -2,7 +2,7 @@
 
 export DATABASE_URL=postgresql://admin@localhost:5432/page_analyzer_db
 
-make install
+make install && poetry install --extras "postgresql"
 if [ $? -eq 0 ]; then
     echo "Все зависимости успешно установлены"
     # Создать роль 'admin' с правом создания БД;
@@ -34,4 +34,4 @@ if [ $? -eq 0 ]; then
 else
     echo "Ошибка при установки зависимостей"
     exit 1
-    fi
+fi
