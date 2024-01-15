@@ -15,13 +15,13 @@
 					</tr>
 				</thead>
 				<tbody>
-					{% if responsive %}
-						{% for result in responsive %}
+					{% if check_sites_info %}
+						{% for check_info in check_sites_info %}
 							<tr>
-								<td>{{ result.id }}</td>
-								<td><a href="url_for('analize_site', id=result.id)">{{ result.name }}</a></td>
-								<td>{{ result.last_check }}</td>
-								<td>{{ result.code_responce }}</td>
+								<td>{{ check_info.id }}</td>
+								<td><a href="url_for('analyze_site', id=check_info.id)">{{ check_info.name }}</a></td>
+								<td>{{ check_info.created_at }}</td>
+								<td>{{ check_info.status_code }}</td>
 							</tr>
 						{% endfor %}
 					{% endif %}

@@ -45,11 +45,11 @@
 					{% for check in site_checks %}
 						<tr>
 							<td>{{ check.id }}</td>
-							<td>{{ check.code_responce }}</td>
+							<td>{{ check.status_code }}</td>
 							<td>{{ check.h1 }}</td>
 							<td>{{ check.title }}</td>
-							<td>{{ check.descripshion }}</td>
-							<td>{{ check.creation_date }}</td>
+							<td>{{ check.description }}</td>
+							<td>{{ check.created_at }}</td>
 						</tr>
 					{% endfor %}
 				{% endif %}
