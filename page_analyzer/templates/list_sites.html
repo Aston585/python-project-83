@@ -19,8 +19,8 @@
 						{% for check_info in check_sites_info %}
 							<tr>
 								<td>{{ check_info.id }}</td>
-								<td><a href="url_for('analyze_site', id=check_info.id)">{{ check_info.name }}</a></td>
-								<td>{{ check_info.created_at }}</td>
+								<td><a href="{{ url_for('analyze_site', id_url=check_info.id) }}">{{ check_info.name }}</a></td>
+								<td>{{ check_info.max }}</td>
 								<td>{{ check_info.status_code }}</td>
 							</tr>
 						{% endfor %}

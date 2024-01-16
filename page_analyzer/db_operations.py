@@ -30,7 +30,7 @@ class OperatorDB:
     def add_site(self, url):
         self.cursor.execute("""
             INSERT INTO urls (name)
-            VALUES (%s);""", (url,))
+            VALUES (%s)""", (url,))
 
     @deco_manage_connection
     def check_availability(self, url):
@@ -54,11 +54,11 @@ class OperatorDB:
                                     h1,
                                     title,
                                     description)
-            VALUES (%s, %s, %s, %s, %s);""", (parsing_res.get('url_id'),
-                                              parsing_res.get('status_code'),
-                                              parsing_res.get('h1'),
-                                              parsing_res.get('title'),
-                                              parsing_res.get('description')))
+            VALUES (%s, %s, %s, %s, %s)""", (parsing_res.get('url_id'),
+                                             parsing_res.get('status_code'),
+                                             parsing_res.get('h1'),
+                                             parsing_res.get('title'),
+                                             parsing_res.get('description')))
 
     @deco_manage_connection
     def get_results_site_checks(self, url_id):
@@ -67,7 +67,7 @@ class OperatorDB:
             id, status_code, h1, title, description, created_at
             FROM url_checks
             WHERE url_id = %s
-            ORDER BY id DESC;
+            ORDER BY id DESC
             """, (url_id,))
         return self.cursor.fetchall()
 
@@ -75,10 +75,13 @@ class OperatorDB:
     def get_sites_info(self):
         self.cursor.execute("""
             SELECT
-            DISTINCT ON (urls.id)
-            urls.id, urls.name, url_checks.created_at, url_checks.status_code
+                urls.id,
+                urls.name,
+                MAX(url_checks.created_at),
+                url_checks.status_code
             FROM urls
-            JOIN url_checks ON urls.id = url_checks.url_id
-            ORDER BY urls.id, url_checks.created_at
+            RIGHT JOIN url_checks ON urls.id = url_checks.url_id
+            GROUP BY urls.id, url_checks.status_code
+            ORDER BY urls.id DESC
             """)
         return self.cursor.fetchall()
