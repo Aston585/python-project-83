@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 
 
-def request_site_status(url, timeout=10):
+def request_site_status(url, timeout=3):
     try:
         responce = requests.get(url, timeout=timeout)
         return responce.status_code
