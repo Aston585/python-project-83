@@ -1,5 +1,6 @@
 # created by virtualenv automatically
 # Byte-compiled / optimized / DLL files
+page_analyzer/__pycache__
 __pycache__
 *.py[cod]
 *$py.class
