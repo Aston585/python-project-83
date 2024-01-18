@@ -17,15 +17,19 @@ class Parser:
         self.soup = BeautifulSoup(self.responce.text, 'lxml')
 
     def get_tag_h1(self):
-        tag_h1 = self.soup.find('h1').get_text(strip=True)
-        return tag_h1 if tag_h1 else ''
+        if tag_h1 := self.soup.find('h1'):
+            return tag_h1.get_text(strip=True)
+        else:
+            return ''
 
     def get_tag_title(self):
-        tag_title = self.soup.find('title').get_text(strip=True)
-        return tag_title if tag_title else ''
+        if tag_title := self.soup.find('title'):
+            return tag_title.get_text(strip=True)
+        else:
+            return ''
 
     def get_attr_content_from_tag_meta(self):
-        meta = self.soup.find('meta', attrs={"name": "description"})
-        if not meta:
+        if meta := self.soup.find('meta', attrs={"name": "description"}):
+            return meta.get('content')
+        else:
             return ''
-        return meta.get('content')
