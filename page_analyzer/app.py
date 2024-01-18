@@ -80,7 +80,7 @@ def checks(id):
         site_status = request_site_status(url)
         if not site_status:
             flash('Произошла ошибка при проверке', 'error')
-            redirect(url_for('analyze_site', id_url=id), code=302)
+            return redirect(url_for('analyze_site', id_url=id), code=302)
         parser = Parser(url)
         parsing_results = {
             'url_id': id,
