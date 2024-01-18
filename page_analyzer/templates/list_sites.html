@@ -20,8 +20,16 @@
 							<tr>
 								<td>{{ check_info.id }}</td>
 								<td><a href="{{ url_for('analyze_site', id_url=check_info.id) }}">{{ check_info.name }}</a></td>
-								<td>{{ check_info.max }}</td>
-								<td>{{ check_info.status_code }}</td>
+								{% if check_info.max %}
+									<td>{{ check_info.max }}</td>
+								{% else %}
+									<td></td>
+								{% endif %}
+								{% if check_info.status_code %}
+									<td>{{ check_info.status_code }}</td>
+								{% else %}
+									<td></td>
+								{% endif %}
 							</tr>
 						{% endfor %}
 					{% endif %}

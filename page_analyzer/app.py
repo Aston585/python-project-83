@@ -51,7 +51,7 @@ def index():
         return redirect(url_for('analyze_site', id_url=id_url), code=302)
 
 
-@app.route("/urls/<id_url>", methods=['GET', 'POST'])
+@app.route("/urls/<id_url>", methods=['GET'])
 def analyze_site(id_url):
     if request.method == 'GET':
         messages = get_flashed_messages(with_categories=True)
@@ -62,19 +62,15 @@ def analyze_site(id_url):
                                site_info=site_info,
                                site_checks=site_checks,
                                )
-    if request.method == 'POST':
-        pass
 
 
-@app.route("/urls", methods=['GET', 'POST'])
+@app.route("/urls", methods=['GET'])
 def get_sites():
     if request.method == 'GET':
         check_sites_info = db_operator.get_sites_info()
         return render_template('list_sites.html',
                                check_sites_info=check_sites_info,
                                )
-    if request.method == 'POST':
-        pass
 
 
 @app.route("/urls/<id>/checks", methods=['POST'])
