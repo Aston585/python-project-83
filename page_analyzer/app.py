@@ -24,8 +24,11 @@ db_operator = OperatorDB()
 def index():
     if request.method == 'GET':
         messages = get_flashed_messages(with_categories=True)
+        invalid_url = session.get('invalid_url', '')
+        session['invalid_url'] = ''
         return render_template('index.html',
-                               messages=messages)
+                               messages=messages,
+                               invalid_url=invalid_url)
 
     if request.method == 'POST':
         if not request.form['url']:
@@ -35,6 +38,7 @@ def index():
         url = normalyze_url(request.form['url'])
         if not validate_url(url):
             flash('Некорректный URL', 'error')
+            session['invalid_url'] = url
             return redirect(url_for('index'), code=302)
 
         if db_operator.check_availability(url):
