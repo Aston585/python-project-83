@@ -82,9 +82,10 @@ def get_sites():
 @app.route("/urls/<id>/checks", methods=['POST'])
 def checks(id):
     if request.method == 'POST':
-        url = session.get(id,
-                          db_operator.get_site_info_on_id(id),
-                          ).get('name')
+        if session.get(id):
+            url = session.get(id).get('name')
+        else:
+            url = db_operator.get_site_info_on_id(id).name
         site_status = request_site_status(url)
         if not site_status:
             flash('Произошла ошибка при проверке', 'error')
