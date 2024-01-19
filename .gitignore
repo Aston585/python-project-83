@@ -153,3 +153,5 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+page_analyzer/__pycache__/app.cpython-311.pyc
+.gitignore

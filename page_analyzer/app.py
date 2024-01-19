@@ -59,7 +59,9 @@ def index():
 def analyze_site(id_url):
     if request.method == 'GET':
         messages = get_flashed_messages(with_categories=True)
-        site_info = session[id_url]
+        site_info = session.get(id_url,
+                                db_operator.get_site_info_on_id(id_url),
+                                )
         site_checks = db_operator.get_results_site_checks(id_url)
         return render_template('show_site.html',
                                messages=messages,

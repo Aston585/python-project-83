@@ -47,6 +47,13 @@ class OperatorDB:
         return self.cursor.fetchone()
 
     @deco_manage_connection
+    def get_site_info_on_id(self, id_url):
+        self.cursor.execute("""
+            SELECT * FROM urls
+            WHERE id = %s""", (id_url,))
+        return self.cursor.fetchone()
+
+    @deco_manage_connection
     def write_result_parsing(self, parsing_res):
         self.cursor.execute("""
             INSERT INTO url_checks (url_id,
