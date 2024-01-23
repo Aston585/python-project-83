@@ -24,22 +24,19 @@ db_operator = OperatorDB()
 def index():
     if request.method == 'GET':
         messages = get_flashed_messages(with_categories=True)
-        invalid_url = session.get('invalid_url', '')
-        session['invalid_url'] = ''
         return render_template('index.html',
-                               messages=messages,
-                               invalid_url=invalid_url)
+                               messages=messages)
 
     if request.method == 'POST':
         if not request.form['url']:
             flash('URL обязателен', 'error')
-            return redirect(url_for('index'), code=302)
+            return redirect(url_for('get_sites'), code=302)
 
         url = normalyze_url(request.form['url'])
         if not validate_url(url):
             flash('Некорректный URL', 'error')
             session['invalid_url'] = url
-            return redirect(url_for('index'), code=302)
+            return redirect(url_for('get_sites'), code=302)
 
         if db_operator.check_availability(url):
             flash('Страница уже существует', 'warning')
@@ -73,6 +70,15 @@ def analyze_site(id_url):
 @app.route("/urls", methods=['GET'])
 def get_sites():
     if request.method == 'GET':
+        messages = get_flashed_messages(with_categories=True)
+        if messages:
+            if messages[0][0] == 'error':
+                invalid_url = session.get('invalid_url', '')
+                session['invalid_url'] = ''
+                return render_template('index.html',
+                                       messages=messages,
+                                       invalid_url=invalid_url)
+
         check_sites_info = db_operator.get_sites_info()
         return render_template('list_sites.html',
                                check_sites_info=check_sites_info,
