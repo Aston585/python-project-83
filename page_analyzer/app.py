@@ -7,7 +7,6 @@ from flask import (Flask,
                    redirect,
                    url_for,
                    flash,
-                   get_flashed_messages,
                    session,
                    )
 import os
@@ -20,23 +19,42 @@ app.secret_key = os.getenv('SECRET_KEY')
 db_operator = OperatorDB()
 
 
-@app.route("/", methods=['GET', 'POST'])
+@app.route("/", methods=['GET'])
 def index():
     if request.method == 'GET':
-        messages = get_flashed_messages(with_categories=True)
-        return render_template('index.html',
-                               messages=messages)
+        return render_template('index.html')
+
+
+@app.route("/urls/<id_url>", methods=['GET'])
+def analyze_site(id_url):
+    if request.method == 'GET':
+        site_info = session.get(id_url,
+                                db_operator.get_site_info_on_id(id_url),
+                                )
+        site_checks = db_operator.get_results_site_checks(id_url)
+        return render_template('show_site.html',
+                               site_info=site_info,
+                               site_checks=site_checks,
+                               )
+
+
+@app.route("/urls", methods=['GET', 'POST'])
+def get_sites():
+    if request.method == 'GET':
+        check_sites_info = db_operator.get_sites_info()
+        return render_template('list_sites.html',
+                               check_sites_info=check_sites_info,
+                               )
 
     if request.method == 'POST':
         if not request.form['url']:
             flash('URL обязателен', 'error')
-            return redirect(url_for('get_sites'), code=302)
+            return render_template('index.html'), 422
 
         url = normalyze_url(request.form['url'])
         if not validate_url(url):
             flash('Некорректный URL', 'error')
-            session['invalid_url'] = url
-            return redirect(url_for('get_sites'), code=302)
+            return render_template('index.html', url=url), 422
 
         if db_operator.check_availability(url):
             flash('Страница уже существует', 'warning')
@@ -49,40 +67,8 @@ def index():
         session[f"{id_url}"] = {'id': id_url,
                                 'name': site_info.name,
                                 'created_at': created_at}
+
         return redirect(url_for('analyze_site', id_url=id_url), code=302)
-
-
-@app.route("/urls/<id_url>", methods=['GET'])
-def analyze_site(id_url):
-    if request.method == 'GET':
-        messages = get_flashed_messages(with_categories=True)
-        site_info = session.get(id_url,
-                                db_operator.get_site_info_on_id(id_url),
-                                )
-        site_checks = db_operator.get_results_site_checks(id_url)
-        return render_template('show_site.html',
-                               messages=messages,
-                               site_info=site_info,
-                               site_checks=site_checks,
-                               )
-
-
-@app.route("/urls", methods=['GET'])
-def get_sites():
-    if request.method == 'GET':
-        messages = get_flashed_messages(with_categories=True)
-        if messages:
-            if messages[0][0] == 'error':
-                invalid_url = session.get('invalid_url', '')
-                session['invalid_url'] = ''
-                return render_template('index.html',
-                                       messages=messages,
-                                       invalid_url=invalid_url)
-
-        check_sites_info = db_operator.get_sites_info()
-        return render_template('list_sites.html',
-                               check_sites_info=check_sites_info,
-                               )
 
 
 @app.route("/urls/<id>/checks", methods=['POST'])
