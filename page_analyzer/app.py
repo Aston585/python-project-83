@@ -1,5 +1,5 @@
 from .db_operations import OperatorDB
-from .parsing import request_site_status, Parser
+from .parsing import Parser
 from .url_processing import normalyze_url, validate_url
 from flask import (Flask,
                    render_template,
@@ -11,6 +11,7 @@ from flask import (Flask,
                    )
 import os
 from dotenv import load_dotenv
+import requests
 
 
 load_dotenv()
@@ -78,14 +79,16 @@ def checks(id):
             url = session.get(id).get('name')
         else:
             url = db_operator.get_site_info_on_id(id).name
-        site_status = request_site_status(url)
-        if not site_status:
+        try:
+            parser = Parser(url)
+            parser.response.raise_for_status()
+        except requests.RequestException:
             flash('Произошла ошибка при проверке', 'error')
             return redirect(url_for('analyze_site', id_url=id), code=302)
-        parser = Parser(url)
+
         parsing_results = {
             'url_id': id,
-            'status_code': site_status,
+            'status_code': parser.get_site_status,
             'h1': parser.get_tag_h1(),
             'title': parser.get_tag_title(),
             'description': parser.get_attr_content_from_tag_meta()

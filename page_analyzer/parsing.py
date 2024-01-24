@@ -2,19 +2,13 @@ import requests
 from bs4 import BeautifulSoup
 
 
-def request_site_status(url, timeout=3):
-    try:
-        responce = requests.get(url, timeout=timeout)
-        return responce.status_code
-
-    except requests.exceptions.RequestException:
-        return None
-
-
 class Parser:
     def __init__(self, url):
-        self.responce = requests.get(url)
-        self.soup = BeautifulSoup(self.responce.text, 'lxml')
+        self.response = requests.get(url, timeout=3)
+        self.soup = BeautifulSoup(self.response.text, 'lxml')
+
+    def get_site_status(self):
+        return self.response.status_code
 
     def get_tag_h1(self):
         if tag_h1 := self.soup.find('h1'):
