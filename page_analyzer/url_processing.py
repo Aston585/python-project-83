@@ -49,15 +49,3 @@ def validate_url(url):
     if len(url) < 255 and validators.url(url):
         return True
     return False
-
-
-# url_test1 = 'https:/// rU.HexLet .iO //projects/83'
-# url_test2 = 'https://rU.HexLet .iO //projects/83/'
-# url_test3 = 'https://ru.hexlet.io/projects/83'
-# url_test4 = 'https://ru.hexlet.io/projects/83'
-# expected_url = 'https://ru.hexlet.io/projects/83'
-
-# assert processing_url(url_test1) == expected_url
-# assert processing_url(url_test2) == expected_url
-# assert processing_url(url_test3) == expected_url
-# assert processing_url(url_test4) == expected_url

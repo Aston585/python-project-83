@@ -79,6 +79,7 @@ def checks(id):
             url = session.get(id).get('name')
         else:
             url = db_operator.get_site_info_on_id(id).name
+
         try:
             parser = Parser(url)
             parser.response.raise_for_status()
@@ -88,7 +89,7 @@ def checks(id):
 
         parsing_results = {
             'url_id': id,
-            'status_code': parser.get_site_status,
+            'status_code': parser.get_site_status(),
             'h1': parser.get_tag_h1(),
             'title': parser.get_tag_title(),
             'description': parser.get_attr_content_from_tag_meta()
