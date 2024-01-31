@@ -48,11 +48,12 @@ def get_sites():
                                )
 
     if request.method == 'POST':
-        if not request.form['url']:
+        url = request.form['url']
+        if not url:
             flash('URL обязателен', 'error')
             return render_template('index.html'), 422
 
-        url = normalyze_url(request.form['url'])
+        url = normalyze_url(url)
         if not validate_url(url):
             flash('Некорректный URL', 'error')
             return render_template('index.html', url=url), 422
