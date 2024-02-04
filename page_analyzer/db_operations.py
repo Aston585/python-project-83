@@ -79,16 +79,20 @@ class OperatorDB:
         return self.cursor.fetchall()
 
     @deco_manage_connection
-    def get_sites_info(self):
+    def get_urls(self):
         self.cursor.execute("""
-            SELECT
-                urls.id,
-                urls.name,
-                MAX(url_checks.created_at),
-                url_checks.status_code
-            FROM urls
-            LEFT JOIN url_checks ON urls.id = url_checks.url_id
-            GROUP BY urls.id, url_checks.status_code
-            ORDER BY urls.id DESC
+            SELECT id, name FROM urls
+            ORDER BY id DESC
+            """)
+        return self.cursor.fetchall()
+
+    @deco_manage_connection
+    def get_checks(self):
+        self.cursor.execute("""
+            SELECT * FROM
+            (SELECT DISTINCT ON (url_id) url_id, created_at, status_code
+             FROM url_checks
+             ORDER BY url_id, created_at DESC)
+            ORDER BY url_id DESC;
             """)
         return self.cursor.fetchall()

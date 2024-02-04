@@ -12,6 +12,7 @@ from flask import (Flask,
 import os
 from dotenv import load_dotenv
 import requests
+from copy import deepcopy
 
 
 load_dotenv()
@@ -42,7 +43,18 @@ def analyze_site(id_url):
 @app.route("/urls", methods=['GET', 'POST'])
 def get_sites():
     if request.method == 'GET':
-        check_sites_info = db_operator.get_sites_info()
+        urls_info = db_operator.get_urls()
+        checks_info = db_operator.get_checks()
+
+        check_sites_info = [url._asdict() for url in deepcopy(urls_info)]
+        for url in check_sites_info:
+            for check in checks_info:
+                if url.get('id') == check.url_id:
+                    url.update(
+                        created_at=check.created_at,
+                        status_code=check.status_code,
+                    )
+
         return render_template('list_sites.html',
                                check_sites_info=check_sites_info,
                                )
