@@ -92,7 +92,7 @@ class OperatorDB:
             SELECT * FROM
             (SELECT DISTINCT ON (url_id) url_id, created_at, status_code
              FROM url_checks
-             ORDER BY url_id, created_at DESC)
-            ORDER BY url_id DESC;
+             ORDER BY url_id, created_at DESC) AS subquery
+            ORDER BY subquery.url_id DESC;
             """)
         return self.cursor.fetchall()
